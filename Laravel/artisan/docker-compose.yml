@@ -1,0 +1,51 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-app
+    container_name: laravel_app
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/var/www
+    networks:
+      - laravel_network
+    # platform: linux/amd64 ## AppleシリコンのPC以外はコメントアウト
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - laravel_network
+    # platform: linux/amd64 ## AppleシリコンのPC以外はコメントアウト
+
+## スクレイピング用
+#   selenium:
+#     image: selenium/standalone-chrome
+#     ports:
+#       - 4444:4444
+#       - 5900:5900
+#     container_name: selenium
+#     privileged: true
+#     networks:
+#       - laravel_network
+
+networks:
+  laravel_network:
+  # react_network:   ## フロントエンドと接続する場合はコメントアウト解除 (defaultはreact_network)
+  #   external: true ## フロントエンドと接続する場合はコメントアウト解除 (defaultはreact_network)
+  #   driver: bridge ## 内部だけでネットワークを構築する場合はこっちのコメントアウトを解除
+
+volumes:
+  db_data:

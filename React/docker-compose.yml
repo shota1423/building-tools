@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    ports:
+      - "3001:3000"
+    networks:
+      - react_network
+    volumes:
+      - .:/app
+## バックエンドのネットワークを指定 (defaultはlaravel_network)
+## バックエンドと接続する場合のみコメントアウト解除
+# networks:
+#   react_network:
+#   laravel_network:
+#     external: true
