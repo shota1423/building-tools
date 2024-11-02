@@ -1,0 +1,21 @@
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: springproject
+    # platform: linux/x86_64 ## M1Macはこれを追加しないと動かない
+  springboot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./:/app
+    command: "mvn spring-boot:run"
+    # platform: linux/x86_64 ## M1Macはこれを追加しないと動かない
